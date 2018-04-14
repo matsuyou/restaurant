@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <form action="list.php" method="post" name="rest_form">
+    <form action="list.php" method="get" name="rest_form">
         <center>
             検索範囲(半径):
             <select name="range">
@@ -30,7 +30,6 @@
                 <option value="2">梅田駅</option>
                 <option value="3">日比谷シャンテ</option>
             </select><br/>
-            <input type="hidden" name="url" value = "<?php echo $url;?>">
             <input id="lat" type="hidden" name="lat" value = "">
             <input id="lon" type="hidden" name="lon" value = "">
             <br/>
@@ -50,39 +49,44 @@
 
     // 現在地取得処理
     function getPosition() {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(   //現在位置を取得
-                function(position) { //取得成功した場合
-                    var lat = position.coords.latitude;  //緯度
-                    var lon = position.coords.longitude; //経度
-                    document.getElementById('lat').value= lat;
-                    document.getElementById('lon').value= lon;
+        var location = document.rest_form.location.selectedIndex;
+        if(location==0){ //現在位置が選択された場合
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(   //現在位置を取得
+                    function(position) { //取得成功した場合
+                        var lat = position.coords.latitude;  //緯度
+                        var lon = position.coords.longitude; //経度
+                        document.getElementById('lat').value= lat;
+                        document.getElementById('lon').value= lon;
 
-                    document.rest_form.submit();
-                },
-                function(error) {  // 取得失敗した場合
-                    switch(error.code) {
-                        case 1: //PERMISSION_DENIED
-                            alert("位置情報の利用が許可されていません");
-                            break;
-                        case 2: //POSITION_UNAVAILABLE
-                            alert("現在位置が取得できませんでした");
-                            break;
-                        case 3: //TIMEOUT
-                            alert("タイムアウトになりました");
-                            break;
-                        default:
-                            alert("エラーコード:"+error.code);
-                            break;
+                        document.rest_form.submit();
+                    },
+                    function(error) {  // 取得失敗した場合
+                        switch(error.code) {
+                            case 1: //PERMISSION_DENIED
+                                alert("位置情報の利用が許可されていません");
+                                break;
+                            case 2: //POSITION_UNAVAILABLE
+                                alert("現在位置が取得できませんでした");
+                                break;
+                            case 3: //TIMEOUT
+                                alert("タイムアウトになりました");
+                                break;
+                            default:
+                                alert("エラーコード:"+error.code);
+                                break;
+                        }
+                        document.rest_form.submit();
+                    },
+                    {   //オプション
+	                    "timeout": 5000,
                     }
-                    document.rest_form.submit();
-                },
-                {
-	                "timeout": 3000,
-                }
-            );
+                );
+            }else{
+                alert("この端末では位置情報が取得できません");
+                document.rest_form.submit();
+            }
         }else{
-            alert("この端末では位置情報が取得できません");
             document.rest_form.submit();
         }
     }

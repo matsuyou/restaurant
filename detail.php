@@ -41,6 +41,7 @@
 
 <body>
     <div class="rest-info">
+    <?php if(isset($info)): ?>
         <?php if(checkString($info->{'name'})): ?>
             <div class="rest-info_title"><?= $info->{'name'} ?></div>
         <?php endif; ?>
@@ -63,6 +64,7 @@
                 <img src="<?= $info->{'image_url'}->{'shop_image2'} ?>">
             </div>
         <?php endif; ?>
+    <?php endif; ?>
     </div>
 </body>
 </html>
