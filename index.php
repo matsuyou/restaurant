@@ -3,28 +3,28 @@
 <meta charset="utf-8">
 <title>検索ページ</title>
 <meta name=”robots” content=”noindex” />
+<LINK rel="stylesheet" type="text/css" href="restaurant.css">
 <br/>
 <br/>
+<center>
+    <h1 class="title"><a href="./">レストラン検索</a></h1>
+</center>
 <br/>
-<br/>
-<div class="title">
-    <center>
-        <a href="./"><h1>レストラン検索</h1></a>
-    </center>
-</div>
 </head>
 
 <body>
     <form action="list.php" method="get" name="rest_form">
         <center>
-            検索範囲(半径):
+            検索範囲(半径)<br/>
             <select name="range">
                 <option value="1">300m</option>
                 <option value="2">500m</option>
                 <option value="3">1km</option>
                 <option value="4">3km</option>
-            </select><br/>
-            検索場所：
+            </select>
+            <br/>
+            <br/>
+            検索場所<br/>
             <select name="location">
                 <option value="1">現在位置</option>
                 <option value="2">梅田駅</option>
@@ -33,7 +33,8 @@
             <input id="lat" type="hidden" name="lat" value = "">
             <input id="lon" type="hidden" name="lon" value = "">
             <br/>
-            <input type="button" value="検索" onClick="getPosition()" />
+            <br/>
+            <input id="search_btn" type="button" value="検索" onClick="getPosition()" />
         </center>
     </form>
 </body>

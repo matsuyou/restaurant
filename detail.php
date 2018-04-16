@@ -3,15 +3,13 @@
 <meta charset="utf-8">
 <title>店舗詳細ページ</title>
 <meta name=”robots” content=”noindex” />
+<LINK rel="stylesheet" type="text/css" href="restaurant.css">
 <br/>
 <br/>
+<center>
+    <h1 class="title"><a href="./">レストラン検索</a></h1>
+</center>
 <br/>
-<br/>
-<div class="title">
-    <center>
-        <a href="./"><h1>レストラン検索</h1></a>
-    </center>
-</div>
 </head>
 
 <?php
@@ -40,31 +38,43 @@
 ?>
 
 <body>
-    <div class="rest-info">
+    <div class="content">
     <?php if(isset($info)): ?>
         <?php if(checkString($info->{'name'})): ?>
-            <div class="rest-info_title"><?= $info->{'name'} ?></div>
-        <?php endif; ?>
-        <?php if(checkString($info->{'address'})): ?>
-            <div class="rest-info_address"><?= $info->{'address'} ?></div>
-        <?php endif; ?>
-        <?php if(checkString($info->{'tel'})): ?>
-            <div class="rest-info_tel"><?= $info->{'tel'} ?></div>
-        <?php endif; ?>
-        <?php if(checkString($info->{'opentime'})): ?>
-            <div class="rest-info_tel"><?= $info->{'opentime'} ?></div>
+            <h2><div class="rest-info_title"><?= $info->{'name'} ?></div></h2>
         <?php endif; ?>
         <?php if(checkString($info->{'image_url'}->{'shop_image1'})): ?>
-            <div class="rest-info_image1">
+            <div class="rest-info_image">
                 <img src="<?= $info->{'image_url'}->{'shop_image1'} ?>">
+                <?php if(checkString($info->{'image_url'}->{'shop_image2'})): ?>
+                    <img src="<?= $info->{'image_url'}->{'shop_image2'} ?>">
+                <?php endif; ?>
             </div>
         <?php endif; ?>
-        <?php if(checkString($info->{'image_url'}->{'shop_image2'})): ?>
-            <div class="rest-info_image2">
-                <img src="<?= $info->{'image_url'}->{'shop_image2'} ?>">
-            </div>
+        <br/>
+        <?php if(checkString($info->{'budget'})): ?>
+            <h3>平均予算</h3>
+            <div class="rest-info_pr"><?= $info->{'budget'} ?>円</div><br/>
+        <?php endif; ?>
+        <?php if(checkString($info->{'address'})): ?>
+            <h3>住所</h3>
+            <div class="rest-info_address"><?= $info->{'address'} ?></div><br/>
+        <?php endif; ?>
+        <?php if(checkString($info->{'tel'})): ?>
+            <h3>電話番号</h3>
+            <div class="rest-info_tel"><?= $info->{'tel'} ?></div><br/>
+        <?php endif; ?>
+        <?php if(checkString($info->{'opentime'})): ?>
+            <h3>営業時間</h3>
+            <div class="rest-info_tel"><?= $info->{'opentime'} ?></div><br/>
+        <?php endif; ?>
+        <?php if(checkString($info->{'holiday'})): ?>
+            <h3>休業日</h3>
+            <div class="rest-info_tel"><?= $info->{'holiday'} ?></div><br/>
         <?php endif; ?>
     <?php endif; ?>
+    <br/>
+    <br/>
     </div>
 </body>
 </html>

@@ -3,22 +3,20 @@
 <meta charset="utf-8">
 <title>結果一覧ページ</title>
 <meta name=”robots” content=”noindex” />
+<LINK rel="stylesheet" type="text/css" href="restaurant.css">
 <br/>
 <br/>
+<center>
+    <h1 class="title"><a href="./">レストラン検索</a></h1>
+</center>
 <br/>
-<br/>
-<div class="title">
-    <center>
-        <a href="./"><h1>レストラン検索</h1></a>
-    </center>
 </div>
-</head>
 
 <?php
     $uri = "http://api.gnavi.co.jp/RestSearchAPI/20150630/";
     $acckey= "6311242a5d72d4380ed5add96f0b3d4d";
     $format = "json";  //返却時のフォーマット
-    $hit_per_page = 15; //1ページの表示数
+    $hit_per_page = 10; //1ページの表示数
 
     if(isset($_GET['range'])){
         $range = $_GET['range'];   //範囲
@@ -62,13 +60,18 @@
 ?>
 
 <body>
+    <div class="content">
+    <?php if(isset($obj)): ?>
     <?php foreach((array)$obj as $key => $val): ?>
         <?php
             if(strcmp($key, "total_hit_count" ) == 0 ){
                 echo "全".$val."件";
-                echo "<br/><br/>";
+                echo "<br/>";
 
-                $total_page = floor($val / $hit_per_page) + 1; //全ページ数
+                $total_page = floor(($val-1) / $hit_per_page) + 1; //全ページ数(上限100ページ？)
+                if($total_page>100){
+                    $total_page = 100;
+                }
             }
         ?>
         <?php if(strcmp($key, "rest") == 0): ?>
@@ -94,29 +97,31 @@
                             <img src="<?= $restArray->{'image_url'}->{'shop_image1'} ?>">
                         </div>
                     <?php endif; ?>
-                </div><br/>
+                </div>
             <?php endforeach; ?>
         <?php endif; ?>
     <?php endforeach; ?>
     <br/>
-    <br/>
+
+    <div class="pagenation">
     <?php
-        $start_num = $page_num - 4;   //現在のページの前後4ページのリンク表示
+        $start_num = $page_num - 3;   //現在のページの前後3ページのリンク表示
         if($start_num < 1){
             $start_num = 1;
         }
     ?>
-    <a href="<?= $page_url ?>&page=1">最初</a>|<br/>
+    <ul>
+    <li><a href="<?= $page_url ?>&page=1">最初</a></li>
     <?php if($page_num > 1): ?>
-        <a href="<?= $page_url ?>&page=<?php echo ($page_num - 1); ?>"><<前</a><br/>
+        <li><a href="<?= $page_url ?>&page=<?php echo ($page_num - 1); ?>"><<前</a></li>
     <?php endif; ?>
 
-    <?php for($i=$start_num; $i<=$start_num+8; $i++): ?>
+    <?php for($i=$start_num; $i<=$start_num+6; $i++): ?>
         <?php if($i <= $total_page): ?>
             <?php if($i != $page_num): ?>
-                <a href="<?= $page_url ?>&page=<?php echo ($i); ?>"><?= $i ?></a><br/>
+                <li><a href="<?= $page_url ?>&page=<?php echo ($i); ?>"><?= $i ?></a></li>
             <?php else: ?>
-                <b><?= $i ?><br/></b>
+                <li><a class="active" href="<?= $page_url ?>&page=<?php echo ($i); ?>"><?= $i ?></a></li>
             <?php endif; ?>
         <?php else: ?>
             <?php break; ?>
@@ -124,9 +129,14 @@
     <?php endfor; ?>
 
     <?php if($page_num < $total_page): ?>
-        <a href="<?= $page_url ?>&page=<?php echo ($page_num + 1); ?>">次>></a><br/>
+        <li><a href="<?= $page_url ?>&page=<?php echo ($page_num + 1); ?>">次>></a></li>
     <?php endif; ?>
-    |<a href="<?= $page_url ?>&page=<?= $total_page ?>">最後</a><br/>
+    <li><a href="<?= $page_url ?>&page=<?= $total_page ?>">最後</a></li>
+    </ul>
+    <?php endif; ?>
+    </div>
+    <br/>
+    <br/>
 </body>
 </html>
 
